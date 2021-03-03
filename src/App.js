@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { ApolloProvider } from '@apollo/client';
+import React from 'react';
+import {client} from './index'
+import Products from './components/products';
+import Header from './components/header';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+        <Header /> 
+        <div className="ban">
+            <div>
+              <h4 className="ban--heading">
+                All Products
+              </h4>
+              <p className="ban--sub">
+                A 360 look at Lumin
+              </p>
+            </div>
+            <div>
+              <div className="ban--filter">
+                Filter By
+              </div>
+            </div>
+        </div>       
+        <Products />
+    </ApolloProvider>
   );
 }
 
