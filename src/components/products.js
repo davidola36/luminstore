@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery, gql, GraphQLEnumType } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 import Cart from './cart';
 
 const GET_PRODUCTS = gql`
@@ -22,11 +22,6 @@ const GET_PRODUCTS = gql`
     }
 `;
 
-const GET_CURRENCIES = gql`
-    query GetCurrencies {
-        currency
-    }
-`;
 
 
 
@@ -39,13 +34,13 @@ function Products() {
     })
     let [cartItem, setItem] = useState(null)
     let [total, setTotal] = useState(null)
+    let [name, setName] = useState('')
     let [currency, setCurrency] = useState("USD")
     const { loading, error, data } = useQuery(GET_PRODUCTS, {
       variables: {currency:currency.replace(/['"]+/g, '')}
     });
-    const [currencies, setCurrencies] = useState(null)
     const updateCart = (item, action) => {
-      if(action == 'reset') {
+      if(action === 'reset') {
         setCart({
           status: false,
           stage: 0
@@ -53,35 +48,42 @@ function Products() {
         setItem(null)
         return
       }
-      if(action == 'add') {
+      if(action === 'add') {
         addToCart(item)
         return
       }
-      if(action == 'incr') {
+      if(action === 'incr') {
         incrementItem(item)
       }
-      if(action == 'decr') {
+      if(action === 'decr') {
         decrementItem(item)
+      }
+      if(action == 'rem') {
+        removeItem(item)
       }
     }
 
     const incrementItem = (item) => {
-      let hasItem = cartItems.findIndex((el)=> el.id == item.id)
-      if(hasItem != -1) {
+      let hasItem = cartItems.findIndex((el)=> el.id === item.id)
+      if(hasItem !== -1) {
         let newCart = [...cartItems]
         newCart[hasItem].amount++
         setItems(newCart)
       }
     }
 
-    const decrementItem = (item) => {
-      let hasItem = cartItems.findIndex((el)=> el.id == item.id)
+    const removeItem = (item) => {
       let newCart
-      if(hasItem != -1) {
-        if(cartItems[hasItem].amount == 1) {
-          newCart = cartItems.filter((el)=>el.id != item.id)
-          console.log(newCart, item.id)
-          setItems(newCart)
+      newCart = cartItems.filter((el)=>el.id !== item.id)
+      setItems(newCart)
+    }
+
+    const decrementItem = (item) => {
+      let hasItem = cartItems.findIndex((el)=> el.id === item.id)
+      let newCart
+      if(hasItem !== -1) {
+        if(cartItems[hasItem].amount === 1) {
+          removeItem(item)
           return
         }
         newCart = [...cartItems]
@@ -103,8 +105,8 @@ function Products() {
 
     
     const addItem = (item) => {
-      let hasItem = cartItems.findIndex((el)=> el.id == item.id)
-      if(hasItem != -1) {
+      let hasItem = cartItems.findIndex((el)=> el.id === item.id)
+      if(hasItem !== -1) {
         let newCart = [...cartItems]
         newCart[hasItem].amount++
         setItems(newCart)
@@ -126,11 +128,13 @@ function Products() {
       setCurrency(currency)
     }
 
-    useEffect(()=>{
-     
-      let sum = 0
-      let newCart = [...cartItems]
+    const handleChange = (e) => {
+      let { value} = e.target
+      setName(value)
+    }
 
+    useEffect(()=>{
+      let sum = 0
       if(cartItems && cartItems.length) {
         for(let i=0; i<cartItems.length;i++) {
           sum += cartItems[i].amount * cartItems[i].price
@@ -148,11 +152,10 @@ function Products() {
         let newCart = [...cartItems]
         if(cartItems && cartItems.length) {
           for(let i=0; i<cartItems.length;i++) {
-            let index = data.products.findIndex((el)=>el.id == cartItems[i].id)
+            let index = data.products.findIndex((el)=>el.id === cartItems[i].id)
             newCart[i].price = data.products[index].price 
           }
           // setCart(newCart)
-          console.log(newCart, showCart)
           setItems(newCart)
         }
       }
@@ -173,6 +176,8 @@ function Products() {
             total={total}
             changeCurrency={changeCurrency}
             currency={currency}
+            name={name}
+            handleChange={handleChange}
           />
           
           {

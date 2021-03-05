@@ -1,11 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AllItems from './AllITems';
 import Modal from './modal';
 import SingleItem from './SingleItem';
 
 
 const Cart = (props) => {
-    console.log('dFDF',props.showCart)
+    useEffect(()=>{
+        let body = document.getElementsByTagName('body')
+        if(props.showCart.status) {
+            body[0].classList.add('modal-open')
+            // console.log()
+        }else {
+            body[0].classList.remove('modal-open')
+        }
+    },[props.showCart.status])
     if(props.showCart.status) {
         return (
             <Modal>
@@ -14,6 +22,8 @@ const Cart = (props) => {
                         <SingleItem 
                             cartItem={props.cartItem} 
                             updateCart={props.updateCart}
+                            name={props.name}
+                            handleChange={props.handleChange}
                         /> : 
                         <AllItems 
                             updateCart={props.updateCart}
@@ -21,6 +31,7 @@ const Cart = (props) => {
                             total={props.total}
                             changeCurrency={props.changeCurrency}
                             currency={props.currency}
+                            name={props.name}
                         />
                 }
             </Modal>

@@ -14,7 +14,6 @@ const SingleItem = (props) => {
     let cartItem = props.cartItem
 
     const handleChange = (e,i) => {
-        let val = e.target
         const { name, value } = e.target;
         console.log(name, value, i)
         let newOption = {}
@@ -36,7 +35,6 @@ const SingleItem = (props) => {
             options: newOptions,
             id: cartItem.id
         }))
-        console.log(item.options)
     },[])
 
 
@@ -50,6 +48,11 @@ const SingleItem = (props) => {
         }, initialValue);
       }
     
+    const submitItem = (e) => {
+        e.preventDefault()
+        props.updateCart(item, 'add')
+    }
+
     const getOptions = () => {
         return (
             <div>
@@ -80,25 +83,34 @@ const SingleItem = (props) => {
     }
     
     return (
-        <div className="cart">
-            <div className="cart-back" onClick={()=>{props.updateCart(null, 'reset')}}>
-                go-back
+        <form className="cart" onSubmit={submitItem}>
+            <div className="cart--back" onClick={()=>{props.updateCart(null, 'reset')}}>
+                &#62;
             </div>
             {/* {props.cartItem.title} */}
-            <img src={props.cartItem.image_url} alt="product" />
-            <h3>First we personalize</h3>
-            <p>Products that you receive may vary according to your age bracket & skin type to optimize results.</p>
-            <h5>Personalization Details</h5>
-            {
-                props.cartItem.product_options.length ? getOptions() : null
-            }
-
-            <div>
-                <button onClick={()=>{props.updateCart(item, 'add')}} className="cart--button">
+            <div className="cart--img">
+                <img src={props.cartItem.image_url} alt="product" />
+            </div>
+            <div className="cart--body">
+                <h3 className="cart--heading">First we personalize</h3>
+                <p className="cart--text">Products that you receive may vary according to your age bracket & skin type to optimize results.</p>
+                <h5 className="cart--sub">Personalization Details</h5>
+                <input type="text" 
+                    className="cart--input u-margin-bottom-small" 
+                    onChange={props.handleChange} 
+                    value={props.name}
+                    required
+                />
+                {
+                    props.cartItem.product_options.length ? getOptions() : null
+                }
+            </div>
+            <div className="cart--footer">
+                <button  className="cart--button">
                         ADD TO CART
                 </button>
             </div>
-        </div>
+        </form>
     )
 }
 
