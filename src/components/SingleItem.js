@@ -15,7 +15,6 @@ const SingleItem = (props) => {
 
     const handleChange = (e,i) => {
         const { name, value } = e.target;
-        console.log(name, value, i)
         let newOption = {}
         newOption[name] = options[i].options[value]
         setItem((prevState)=>({

@@ -85,6 +85,15 @@ button {
   padding: 5rem 2rem;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
+
+
+  @media (min-width:768px) {
+    flex-direction: row;
+    
+
+   
+  }
 
   &--heading {
     font-size: 3rem;
@@ -97,11 +106,17 @@ button {
   }
 
   &--filter {
-    width: 400px;
+    width: 100%;
+    margin-top: 20px;
     height: 57px;
     background-color: #FFFFFF;
     border: 1px solid #cdd1ce;
     padding: 1rem;
+
+    @media (min-width:768px) {
+      width: 400px;
+      margin-top: 0px;
+    }
   }
 
 
@@ -130,6 +145,16 @@ button {
 
     @media (min-width:768px) {
       flex: 0 0 33.33%;
+    }
+
+    p {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    p.from {
+      // font-size: 8px;
     }
 
     img {

@@ -140,8 +140,8 @@ function Products() {
           sum += cartItems[i].amount * cartItems[i].price
         }
         // setCart(newCart)
-        setTotal(sum)
       }
+      setTotal(sum)
 
       
     },[cartItems,currency])
@@ -189,8 +189,11 @@ function Products() {
 
                 </div>
                 <p>{product.title}</p>
-                <p>{product.price}</p>
+                <p className="from">FROM:
+                {currency} {product.price.toLocaleString() + '.00'}
 
+                </p>
+                
                 <button className="product--button" onClick={()=>{addItem(product)}}>
                   Add to Cart
                 </button>
