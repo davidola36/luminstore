@@ -1,15 +1,18 @@
+import React from 'react';
 import './App.scss';
 import { ApolloProvider } from '@apollo/client';
-import React from 'react';
 import {client} from './index'
 import Products from './components/products';
 import Header from './components/header';
 
 
 function App() {
+  
+
   return (
     <ApolloProvider client={client}>
         <Header /> 
+        
         <div className="ban">
             <div>
               <h4 className="ban--heading">

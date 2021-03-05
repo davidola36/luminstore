@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# Getting Started with Luminstore
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+To set up the project go into the project directiory and run (use yarn/npm)
+
+### `yarn install`
+install all the project dependencies
+
 
 ## Available Scripts
 
